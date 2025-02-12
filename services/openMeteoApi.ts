@@ -28,7 +28,7 @@ interface HourlyWeather {
   temperature_80m: number[];
 }
 
-interface WeatherData {
+export interface WeatherData {
   current: CurrentWeather;
   hourly: HourlyWeather;
   timezone: string;

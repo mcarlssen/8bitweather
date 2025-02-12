@@ -3,15 +3,24 @@ import { useState } from 'react';
 import LocationInput from '../components/LocationInput';
 import { GlobeHemisphereWest, Thermometer, Wind, CloudSun, Ruler, Percent } from 'phosphor-react';
 import { OpenMeteoApi } from '../services/openMeteoApi';
+import { WeatherData } from '../services/openMeteoApi';
 import { WeatherDescriptions } from '../services/weatherDescriptions';
+
+interface Suggestion {
+  name: string;
+  latitude: number;
+  longitude: number;
+  admin1?: string;
+  country?: string;
+}
 
 export default function Home() {
   // State to store the geocoding suggestions (may be more than one result)
-  const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   // State for the current location text (controlled by LocationInput)
   const [location, setLocation] = useState("Enter location");
   // State for weather data from Open-Meteo
-  const [weatherData, setWeatherData] = useState<any>(null);
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
 
   // This handler now uses the Open-Meteo Geocoding API to get coordinates from the location string.
   const handleLocationChange = async (newLocation: string, isEditing?: boolean) => {
@@ -28,7 +37,7 @@ export default function Home() {
   };
 
   // Handler when the user clicks on a suggestion.
-  const handleSuggestionClick = async (result: any, e: React.MouseEvent) => {
+  const handleSuggestionClick = async (result: Suggestion, e: React.MouseEvent) => {
     // Prevent any pending blur events
     e.preventDefault();
     e.stopPropagation();
