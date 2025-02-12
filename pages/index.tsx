@@ -100,9 +100,10 @@ export default function Home() {
                 <div className="weather-box-content">
                   {(() => {
                     const current = weatherData.current.temperature_2m;
-                    const { value: dramatic, description: dramaticDesc, hourOffset } = OpenMeteoApi.findMostDramaticChange(
+                    const { value: dramatic, hourOffset } = OpenMeteoApi.findMostDramaticChange(
                       current,
                       weatherData.hourly.temperature_2m,
+                      12,
                       'temperature'
                     );
                     return (
@@ -132,9 +133,10 @@ export default function Home() {
                 <div className="weather-box-content">
                   {(() => {
                     const current = weatherData.current.precipitation_probability;
-                    const { value: dramatic, description: dramaticDesc, hourOffset } = OpenMeteoApi.findMostDramaticChange(
+                    const { value: dramatic, hourOffset } = OpenMeteoApi.findMostDramaticChange(
                       current,
                       weatherData.hourly.precipitation_probability,
+                      12,
                       'precipitationChance'
                     );
                     return (
@@ -164,9 +166,10 @@ export default function Home() {
                 <div className="weather-box-content">
                   {(() => {
                     const current = weatherData.current.precipitation;
-                    const { value: dramatic, description: dramaticDesc, hourOffset } = OpenMeteoApi.findMostDramaticChange(
+                    const { value: dramatic, hourOffset } = OpenMeteoApi.findMostDramaticChange(
                       current,
                       weatherData.hourly.precipitation,
+                      12,
                       'precipitation'
                     );
                     return (
@@ -196,9 +199,10 @@ export default function Home() {
                 <div className="weather-box-content">
                   {(() => {
                     const current = weatherData.current.cloud_cover;
-                    const { value: dramatic, description: dramaticDesc, hourOffset } = OpenMeteoApi.findMostDramaticChange(
+                    const { value: dramatic, hourOffset } = OpenMeteoApi.findMostDramaticChange(
                       current,
                       weatherData.hourly.cloud_cover,
+                      12,
                       'cloudCover'
                     );
                     return (
@@ -228,9 +232,10 @@ export default function Home() {
                 <div className="weather-box-content">
                   {(() => {
                     const current = weatherData.current.wind_speed_10m;
-                    const { value: dramatic, description: dramaticDesc, hourOffset } = OpenMeteoApi.findMostDramaticChange(
+                    const { value: dramatic, hourOffset } = OpenMeteoApi.findMostDramaticChange(
                       current,
                       weatherData.hourly.wind_speed_10m,
+                      12,
                       'windSpeed'
                     );
                     return (

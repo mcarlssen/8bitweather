@@ -1,4 +1,5 @@
 import { WeatherDescriptions } from './weatherDescriptions';
+import { WeatherMetric } from '../types/weather';
 
 interface GeocodingResult {
   name: string;
