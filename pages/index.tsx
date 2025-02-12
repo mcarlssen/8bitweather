@@ -278,6 +278,33 @@ export default function Home() {
           </>
         )}
       </div>
+      {weatherData && (
+        <div className="debug-controls">
+          <div
+            className="debug-api-button" 
+            onClick={() => {
+              const url = OpenMeteoApi.getLastRequestUrl();
+              console.log('API URL:', url);
+              navigator.clipboard.writeText(url);
+            }}
+            title="Copy API URL"
+          >
+            <img src="https://unpkg.com/pixelarticons@1.8.1/svg/sync.svg" className="debug-icon"/>
+          </div>
+          <div
+            className="debug-api-button"
+            onClick={async () => {
+              const weather = await OpenMeteoApi.refreshWeather();
+              if (weather) {
+                setWeatherData(weather);
+              }
+            }}
+            title="Refresh Weather Data"
+          >
+            <img src="https://unpkg.com/pixelarticons@1.8.1/svg/loader.svg" className="debug-icon"/>
+          </div>
+        </div>
+      )}
     </>
   );
 } 

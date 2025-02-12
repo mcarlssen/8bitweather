@@ -45,15 +45,20 @@ interface WeatherDescription {
 export class OpenMeteoApi {
   private static readonly GEOCODING_BASE_URL = 'https://geocoding-api.open-meteo.com/v1';
   private static readonly WEATHER_BASE_URL = 'https://api.open-meteo.com/v1';
+  private static lastWeatherUrl: string = '';
+  private static lastGeocodingUrl: string = '';
+  private static lastLatitude: number | null = null;
+  private static lastLongitude: number | null = null;
 
   /**
    * Search for locations matching the given search term
    */
   static async searchLocations(searchTerm: string): Promise<GeocodingResult[]> {
     try {
-      const response = await fetch(
-        `${this.GEOCODING_BASE_URL}/search?name=${encodeURIComponent(searchTerm)}`
-      );
+      const url = `${this.GEOCODING_BASE_URL}/search?name=${encodeURIComponent(searchTerm)}`;
+      this.lastGeocodingUrl = url;
+      console.log('Fetching location data from:', url);
+      const response = await fetch(url);
       
       if (!response.ok) {
         throw new Error('Geocoding API request failed');
@@ -71,6 +76,9 @@ export class OpenMeteoApi {
    * Get current weather data for the specified coordinates
    */
   static async getCurrentWeather(latitude: number, longitude: number): Promise<WeatherData | null> {
+    // Store coordinates for refresh functionality
+    this.lastLatitude = latitude;
+    this.lastLongitude = longitude;
     try {
       const params = new URLSearchParams({
         latitude: latitude.toString(),
@@ -92,9 +100,10 @@ export class OpenMeteoApi {
         forecast_hours: '12'
       });
 
-      const response = await fetch(
-        `${this.WEATHER_BASE_URL}/forecast?${params.toString()}`
-      );
+      const url = `${this.WEATHER_BASE_URL}/forecast?${params.toString()}`;
+      this.lastWeatherUrl = url;
+      console.log('Fetching weather data from:', url);
+      const response = await fetch(url);
 
       if (!response.ok) {
         throw new Error('Weather API request failed');
@@ -153,5 +162,17 @@ export class OpenMeteoApi {
       value: mostDramaticValue,
       hourOffset,
     };
+  }
+
+  static async refreshWeather(): Promise<WeatherData | null> {
+    if (this.lastLatitude === null || this.lastLongitude === null) {
+      console.error('No previous weather request to refresh');
+      return null;
+    }
+    return this.getCurrentWeather(this.lastLatitude, this.lastLongitude);
+  }
+
+  static getLastRequestUrl(): string {
+    return this.lastWeatherUrl || '';
   }
 } 

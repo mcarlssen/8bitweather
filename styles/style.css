@@ -68,44 +68,51 @@ body {
 
 .weather-box-icon-layer {
   position: absolute;
-  left: 50%;
-  top: 22px;
-  transform: translate(-50%, -50%);
-  opacity: 1;  /* Slightly more visible */
+  left: 0;
+  right: 0;
+  top: 8px;  /* Fixed distance from top */
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
   z-index: 1;
 }
 
 .weather-box-content {
   display: flex;
   justify-content: space-between;
-  padding: 8px;
-  padding-top: 40px;
+  padding: 40px 8px 8px 8px;  /* Top padding accounts for icon */
   flex: 1;
-  align-items: center;
   gap: 10px;
   position: relative;
   z-index: 2;
+  height: 100%;
 }
 
 .weather-value, .later-value {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   gap: 2px;
   width: 100%;
   position: relative;
   z-index: 2;
-  min-height: 100%;
-  margin: 0;
+  justify-content: flex-start;  /* Align from top */
+  height: 100%;  /* Take full height */
+}
+
+.weather-value .numerical, .later-value .numerical {
+  display: flex;
+  align-items: center;
+  padding: 4px 0;
+  font-size: 0.6em;
+  color: #fdeade;
+  text-shadow: 0 0 3px #eecebb;
 }
 
 /* Left align numerical values in the "now" column */
 .weather-value .numerical {
-  font-size: 0.6em;
-  color: #fdeade;
-  height: fit-content;
-  text-shadow: 0 0 3px #eecebb;
+  justify-content: flex-start;
   align-self: flex-start;
   margin-left: 10px;
 }
@@ -114,7 +121,6 @@ body {
 .later-value .numerical {
   display: flex;
   gap: 5px;
-  align-items: center;
   justify-content: flex-end;
   align-self: flex-end;
   margin-right: 10px;
@@ -128,9 +134,10 @@ body {
   padding: 3px;
   border-radius: 1px;
   width: 100%;
-  margin: 0;
-  height: fit-content;
-  margin-top: auto;  /* Push to bottom */
+  min-height: 2.4em;  /* Consistent height for description box */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .weather-box-icon {
@@ -249,6 +256,30 @@ img.weather-box-icon {
 .weather-grid-header > div {
   flex: 1;
   text-align: center;
+}
+
+.debug-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.debug-api-button {
+  background: none;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.debug-icon {
+  width: 20px;
+  height: 20px;
+  filter: saturate(319%) hue-rotate(316deg) brightness(103%) contrast(101%) drop-shadow(0 0 5px #eecebb);
 }
 
   
