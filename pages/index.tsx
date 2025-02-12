@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { useState } from 'react';
 import LocationInput from '../components/LocationInput';
-import { GlobeHemisphereWest, Thermometer, Wind, CloudSun, Ruler, Percent } from 'phosphor-react';
+import { GlobeHemisphereWest } from 'phosphor-react';
 import { OpenMeteoApi } from '../services/openMeteoApi';
 import { WeatherData } from '../services/openMeteoApi';
 import { WeatherDescriptions } from '../services/weatherDescriptions';
@@ -26,9 +26,8 @@ export default function Home() {
   // This handler now uses the Open-Meteo Geocoding API to get coordinates from the location string.
   const handleLocationChange = async (newLocation: string, isEditing?: boolean) => {
     console.log("New location:", newLocation);
-    // Update parent's location state so that the field reflects the latest text.
     setLocation(newLocation);
-    // Only fetch suggestions if we're actively editing
+    
     if (!isEditing) {
       setSuggestions([]);
       return;
@@ -39,18 +38,16 @@ export default function Home() {
 
   // Handler when the user clicks on a suggestion.
   const handleSuggestionClick = async (result: Suggestion, e: React.MouseEvent) => {
-    // Prevent any pending blur events
     e.preventDefault();
     e.stopPropagation();
 
     console.log(`User selected: ${result.name} (lat: ${result.latitude}, lon: ${result.longitude})`);
-    // Clear suggestions after selection.
     setSuggestions([]);
-    // Create a full location string to reflect additional data.
     const fullLocation = OpenMeteoApi.formatLocationString(result);
-    // Update the parent's location state.
     setLocation(fullLocation);
-    // Fetch weather data using the selected location's coordinates.
+    // Force blur the input to prevent further edits
+    (document.activeElement as HTMLElement)?.blur();
+    
     const weather = await OpenMeteoApi.getCurrentWeather(result.latitude, result.longitude);
     if (weather) {
       setWeatherData(weather);
@@ -106,7 +103,7 @@ export default function Home() {
               {/* Temperature Card */}
               <div className="weather-box weather-box-temp">
                 <div className="weather-box-icon-layer">
-                  <Thermometer size={30} weight="fill" className="weather-box-icon" />
+                  <img src="https://unpkg.com/pixelarticons@1.8.1/svg/ac.svg" className="weather-box-icon"/>
                 </div>
                 <div className="weather-box-content">
                   {(() => {
@@ -120,15 +117,17 @@ export default function Home() {
                     return (
                       <>
                         <div className="weather-value">
-                          <p className="description">{WeatherDescriptions.describe('temperature', current)}</p>
                           <p className="numerical">{WeatherDescriptions.formatRawValue('temperature', current)}</p>
+                          <p className="description">{WeatherDescriptions.describe('temperature', current)}</p>
                         </div>
                         <div className="later-value">
                           <div className="weather-value">
+                            <p className="numerical">
+                              {WeatherDescriptions.formatRawValue('temperature', dramatic)}
+                              <span className="hour-note">in {hourOffset}h</span>
+                            </p>
                             <p className="description">{WeatherDescriptions.describe('temperature', dramatic)}</p>
-                            <p className="numerical">{WeatherDescriptions.formatRawValue('temperature', dramatic)}</p>
                           </div>
-                          <span className="hour-note">in {hourOffset}h</span>
                         </div>
                       </>
                     );
@@ -139,7 +138,7 @@ export default function Home() {
               {/* Precipitation Chance Card */}
               <div className="weather-box weather-box-precip">
                 <div className="weather-box-icon-layer">
-                  <Percent size={30} weight="fill" className="weather-box-icon" />
+                  <img src="https://unpkg.com/pixelarticons@1.8.1/svg/percent.svg" className="weather-box-icon"/>
                 </div>
                 <div className="weather-box-content">
                   {(() => {
@@ -153,15 +152,17 @@ export default function Home() {
                     return (
                       <>
                         <div className="weather-value">
-                          <p className="description">{WeatherDescriptions.describe('precipitationChance', current)}</p>
                           <p className="numerical">{WeatherDescriptions.formatRawValue('precipitationChance', current)}</p>
+                          <p className="description">{WeatherDescriptions.describe('precipitationChance', current)}</p>
                         </div>
                         <div className="later-value">
                           <div className="weather-value">
+                            <p className="numerical">
+                              {WeatherDescriptions.formatRawValue('precipitationChance', dramatic)}
+                              <span className="hour-note">in {hourOffset}h</span>
+                            </p>
                             <p className="description">{WeatherDescriptions.describe('precipitationChance', dramatic)}</p>
-                            <p className="numerical">{WeatherDescriptions.formatRawValue('precipitationChance', dramatic)}</p>
                           </div>
-                          <span className="hour-note">in {hourOffset}h</span>
                         </div>
                       </>
                     );
@@ -172,7 +173,7 @@ export default function Home() {
               {/* Total Precipitation Card */}
               <div className="weather-box weather-box-rain">
                 <div className="weather-box-icon-layer">
-                  <Ruler size={30} weight="fill" className="weather-box-icon" />
+                  <img src="https://unpkg.com/pixelarticons@1.8.1/svg/drop-half.svg" className="weather-box-icon"/>
                 </div>
                 <div className="weather-box-content">
                   {(() => {
@@ -186,15 +187,17 @@ export default function Home() {
                     return (
                       <>
                         <div className="weather-value">
-                          <p className="description">{WeatherDescriptions.describe('precipitation', current)}</p>
                           <p className="numerical">{WeatherDescriptions.formatRawValue('precipitation', current)}</p>
+                          <p className="description">{WeatherDescriptions.describe('precipitation', current)}</p>
                         </div>
                         <div className="later-value">
                           <div className="weather-value">
+                            <p className="numerical">
+                              {WeatherDescriptions.formatRawValue('precipitation', dramatic)}
+                              <span className="hour-note">in {hourOffset}h</span>
+                            </p>
                             <p className="description">{WeatherDescriptions.describe('precipitation', dramatic)}</p>
-                            <p className="numerical">{WeatherDescriptions.formatRawValue('precipitation', dramatic)}</p>
                           </div>
-                          <span className="hour-note">in {hourOffset}h</span>
                         </div>
                       </>
                     );
@@ -205,7 +208,7 @@ export default function Home() {
               {/* Cloud Cover Card */}
               <div className="weather-box weather-box-cloud">
                 <div className="weather-box-icon-layer">
-                  <CloudSun size={30} weight="fill" className="weather-box-icon" />
+                  <img src="https://unpkg.com/pixelarticons@1.8.1/svg/cloud-sun.svg" className="weather-box-icon"/>
                 </div>
                 <div className="weather-box-content">
                   {(() => {
@@ -219,15 +222,17 @@ export default function Home() {
                     return (
                       <>
                         <div className="weather-value">
-                          <p className="description">{WeatherDescriptions.describe('cloudCover', current)}</p>
                           <p className="numerical">{WeatherDescriptions.formatRawValue('cloudCover', current)}</p>
+                          <p className="description">{WeatherDescriptions.describe('cloudCover', current)}</p>
                         </div>
                         <div className="later-value">
                           <div className="weather-value">
+                            <p className="numerical">
+                              {WeatherDescriptions.formatRawValue('cloudCover', dramatic)}
+                              <span className="hour-note">in {hourOffset}h</span>
+                            </p>
                             <p className="description">{WeatherDescriptions.describe('cloudCover', dramatic)}</p>
-                            <p className="numerical">{WeatherDescriptions.formatRawValue('cloudCover', dramatic)}</p>
                           </div>
-                          <span className="hour-note">in {hourOffset}h</span>
                         </div>
                       </>
                     );
@@ -238,7 +243,7 @@ export default function Home() {
               {/* Wind Speed Card */}
               <div className="weather-box weather-box-wind">
                 <div className="weather-box-icon-layer">
-                  <Wind size={30} weight="fill" className="weather-box-icon" />
+                  <img src="https://unpkg.com/pixelarticons@1.8.1/svg/wind.svg" className="weather-box-icon"/>
                 </div>
                 <div className="weather-box-content">
                   {(() => {
@@ -252,15 +257,17 @@ export default function Home() {
                     return (
                       <>
                         <div className="weather-value">
-                          <p className="description">{WeatherDescriptions.describe('windSpeed', current)}</p>
                           <p className="numerical">{WeatherDescriptions.formatRawValue('windSpeed', current)}</p>
+                          <p className="description">{WeatherDescriptions.describe('windSpeed', current)}</p>
                         </div>
                         <div className="later-value">
                           <div className="weather-value">
+                            <p className="numerical">
+                              {WeatherDescriptions.formatRawValue('windSpeed', dramatic)}
+                              <span className="hour-note">in {hourOffset}h</span>
+                            </p>
                             <p className="description">{WeatherDescriptions.describe('windSpeed', dramatic)}</p>
-                            <p className="numerical">{WeatherDescriptions.formatRawValue('windSpeed', dramatic)}</p>
                           </div>
-                          <span className="hour-note">in {hourOffset}h</span>
                         </div>
                       </>
                     );

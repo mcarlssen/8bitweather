@@ -24,7 +24,7 @@ const LocationInput: React.FC<LocationInputProps> = ({
 
   // Debounce: call onLocationChange 100ms after the user stops typing while editing.
   useEffect(() => {
-    if (editing && onLocationChange) {
+    if (editing && onLocationChange && internalLocation !== value) {
       const handler = setTimeout(() => {
         onLocationChange(internalLocation, editing);
       }, 100);
@@ -34,7 +34,9 @@ const LocationInput: React.FC<LocationInputProps> = ({
 
   useEffect(() => {
     if (value !== undefined) {
-      setInternalLocation(value);
+      if (value !== internalLocation) {
+        setInternalLocation(value);
+      }
     }
   }, [value]);
 
@@ -42,7 +44,7 @@ const LocationInput: React.FC<LocationInputProps> = ({
     // Add a small delay to allow click events to process first
     setTimeout(() => {
       setEditing(false);
-      if (onLocationChange) {
+      if (onLocationChange && internalLocation !== value) {
         onLocationChange(internalLocation, false);
       }
     }, 100);

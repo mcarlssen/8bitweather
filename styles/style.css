@@ -49,7 +49,7 @@ body {
 #weather-grid {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 5px;
   flex: 1;
   min-height: 0; /* Prevents flex overflow */
 }
@@ -57,6 +57,7 @@ body {
 /* Weather box style */
 .weather-box {
   background-color: #3a2a27;
+  outline: 1px solid #978480;
   padding: 5px;
   text-align: center;
   display: flex;
@@ -67,10 +68,10 @@ body {
 
 .weather-box-icon-layer {
   position: absolute;
-  left: 10px;
+  left: 50%;
   top: 22px;
-  transform: translateY(-50%);
-  opacity: 0.4;  /* Slightly more visible */
+  transform: translate(-50%, -50%);
+  opacity: 1;  /* Slightly more visible */
   z-index: 1;
 }
 
@@ -78,6 +79,7 @@ body {
   display: flex;
   justify-content: space-between;
   padding: 8px;
+  padding-top: 40px;
   flex: 1;
   align-items: center;
   gap: 10px;
@@ -85,41 +87,66 @@ body {
   z-index: 2;
 }
 
-.weather-value {
+.weather-value, .later-value {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;  /* Center content vertically */
+  justify-content: center;
   gap: 2px;
-  width: 50%;
+  width: 100%;
   position: relative;
   z-index: 2;
-  min-height: 100%;  /* Take full height of container */
+  min-height: 100%;
+  margin: 0;
+}
+
+/* Left align numerical values in the "now" column */
+.weather-value .numerical {
+  font-size: 0.6em;
+  color: #fdeade;
+  height: fit-content;
+  text-shadow: 0 0 3px #eecebb;
+  align-self: flex-start;
+  margin-left: 10px;
+}
+
+/* Right align numerical values in the "later" column */
+.later-value .numerical {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: flex-end;
+  align-self: flex-end;
+  margin-right: 10px;
 }
 
 .weather-value .description {
   font-size: 0.65em;
   color: #200c00;
-  background-color: #fdeade;
+  background-color: #fdeade77;
   filter: drop-shadow(0 0 5px #eecebb);
   padding: 3px;
-  border-radius: 2px;
+  border-radius: 1px;
   width: 100%;
   margin: 0;
   height: fit-content;
-}
-
-.weather-value .numerical {
-  font-size: 0.5em;
-  color: #fdeade;
-  margin: 0;
-  height: fit-content;
-  text-shadow: 0 0 3px #eecebb;
+  margin-top: auto;  /* Push to bottom */
 }
 
 .weather-box-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Style for Phosphor icons */
+svg.weather-box-icon {
   color: #fdeade;
   filter: drop-shadow(0 0 5px #eecebb);
+}
+
+/* Style for pixelarticon SVGs */
+img.weather-box-icon {
+  filter: invert(95%) sepia(19%) saturate(319%) hue-rotate(316deg) brightness(103%) contrast(101%) drop-shadow(0 0 5px #eecebb);
 }
 
 .weather-box-cloud, .weather-box-rain, .weather-box-wind, .weather-box-precip, .weather-box-temp {
@@ -127,7 +154,7 @@ body {
   overflow: hidden;
 }
 
-.weather-box-cloud::before, .weather-box-rain::before, .weather-box-wind::before, .weather-box-precip::before, .weather-box-temp::before {
+.weather-box::before {
   content: '';
   position: absolute;
   top: 0;
@@ -136,8 +163,7 @@ body {
   bottom: 0;
   background-size: cover;
   background-position: center;
-  filter: contrast(0.3) brightness(0.55);
-  /* filter: blur(2px); */
+  filter: contrast(0.3) brightness(0.65);
   z-index: 0;  /* Below everything */
 }
 
@@ -159,19 +185,6 @@ body {
 
 .weather-box-temp::before {
   background-image: url('../images/temp-cottage.jpg');
-}
-
-.weather-box::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-size: cover;
-  background-position: center;
-  filter: contrast(0.3) brightness(0.55);
-  z-index: 0;  /* Below everything */
 }
 
 /* Suggestions container */
@@ -238,40 +251,4 @@ body {
   text-align: center;
 }
 
-.later-value {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;  /* Center content vertically */
-  align-items: center;
-  gap: 4px;
-  width: 50%;
-  height: fit-content;
-  min-height: 100%;  /* Take full height of container */
-}
-
-.later-value .weather-value {
-  width: 100%;
-  margin: 0;
-  padding-bottom: 16px;  /* Make space for the hour note */
-}
-
-.weather-value .description {
-  font-size: 0.65em;
-  color: #200c00;
-  background-color: #fdeade;
-  filter: drop-shadow(0 0 5px #eecebb);
-  padding: 3px;
-  border-radius: 2px;
-  width: 100%;
-  margin: 0;
-  height: fit-content;
-}
-
-.hour-note {
-  font-size: 0.65em;
-  color: #fdeade;
-  opacity: 0.8;
-  position: absolute;
-  bottom: 0;
-}
   
