@@ -1,3 +1,5 @@
+import { WeatherDescriptions } from './weatherDescriptions';
+
 interface GeocodingResult {
   name: string;
   latitude: number;
@@ -12,6 +14,7 @@ interface CurrentWeather {
   precipitation: number;
   cloud_cover: number;
   wind_speed_10m: number;
+  precipitation_probability: number;
 }
 
 interface HourlyWeather {
@@ -31,6 +34,11 @@ interface WeatherData {
   timezone_abbreviation: string;
   latitude: number;
   longitude: number;
+}
+
+interface WeatherDescription {
+  raw: string;
+  description: string;
 }
 
 export class OpenMeteoApi {
@@ -66,7 +74,7 @@ export class OpenMeteoApi {
       const params = new URLSearchParams({
         latitude: latitude.toString(),
         longitude: longitude.toString(),
-        current: ['temperature_2m', 'precipitation', 'cloud_cover', 'wind_speed_10m'].join(','),
+        current: ['temperature_2m', 'precipitation', 'cloud_cover', 'wind_speed_10m', 'precipitation_probability'].join(','),
         hourly: [
           'temperature_2m',
           'precipitation_probability',
@@ -123,7 +131,8 @@ export class OpenMeteoApi {
   static findMostDramaticChange(
     currentValue: number,
     hourlyValues: number[],
-    firstNHours: number = 12
+    firstNHours: number = 12,
+    metric: WeatherMetric
   ): { value: number; hourOffset: number } {
     const relevantValues = hourlyValues.slice(0, firstNHours);
     let maxDelta = 0;
@@ -139,6 +148,9 @@ export class OpenMeteoApi {
       }
     });
     
-    return { value: mostDramaticValue, hourOffset };
+    return {
+      value: mostDramaticValue,
+      hourOffset,
+    };
   }
 } 

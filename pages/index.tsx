@@ -3,6 +3,7 @@ import { useState } from 'react';
 import LocationInput from '../components/LocationInput';
 import { GlobeHemisphereWest, Thermometer, Wind, CloudSun, Ruler, Percent } from 'phosphor-react';
 import { OpenMeteoApi } from '../services/openMeteoApi';
+import { WeatherDescriptions } from '../services/weatherDescriptions';
 
 export default function Home() {
   // State to store the geocoding suggestions (may be more than one result)
@@ -93,21 +94,28 @@ export default function Home() {
             <div id="weather-grid">
               {/* Temperature Card */}
               <div className="weather-box weather-box-temp">
-                <div className="weather-box-header">
-                  <Thermometer size={32} weight="fill" className="weather-box-icon" />
+                <div className="weather-box-icon-layer">
+                  <Thermometer size={30} weight="fill" className="weather-box-icon" />
                 </div>
                 <div className="weather-box-content">
                   {(() => {
                     const current = weatherData.current.temperature_2m;
-                    const { value: dramatic, hourOffset } = OpenMeteoApi.findMostDramaticChange(
+                    const { value: dramatic, description: dramaticDesc, hourOffset } = OpenMeteoApi.findMostDramaticChange(
                       current,
-                      weatherData.hourly.temperature_2m
+                      weatherData.hourly.temperature_2m,
+                      'temperature'
                     );
                     return (
                       <>
-                        <p>{current}°F</p>
+                        <div className="weather-value">
+                          <p className="description">{WeatherDescriptions.describe('temperature', current)}</p>
+                          <p className="numerical">{WeatherDescriptions.formatRawValue('temperature', current)}</p>
+                        </div>
                         <div className="later-value">
-                          <p>{dramatic}°F</p>
+                          <div className="weather-value">
+                            <p className="description">{WeatherDescriptions.describe('temperature', dramatic)}</p>
+                            <p className="numerical">{WeatherDescriptions.formatRawValue('temperature', dramatic)}</p>
+                          </div>
                           <span className="hour-note">in {hourOffset}h</span>
                         </div>
                       </>
@@ -118,21 +126,28 @@ export default function Home() {
               
               {/* Precipitation Chance Card */}
               <div className="weather-box weather-box-precip">
-                <div className="weather-box-header">
-                  <Percent size={32} weight="fill" className="weather-box-icon" />
+                <div className="weather-box-icon-layer">
+                  <Percent size={30} weight="fill" className="weather-box-icon" />
                 </div>
                 <div className="weather-box-content">
                   {(() => {
                     const current = weatherData.current.precipitation_probability;
-                    const { value: dramatic, hourOffset } = OpenMeteoApi.findMostDramaticChange(
+                    const { value: dramatic, description: dramaticDesc, hourOffset } = OpenMeteoApi.findMostDramaticChange(
                       current,
-                      weatherData.hourly.precipitation_probability
+                      weatherData.hourly.precipitation_probability,
+                      'precipitationChance'
                     );
                     return (
                       <>
-                        <p>{current}%</p>
+                        <div className="weather-value">
+                          <p className="description">{WeatherDescriptions.describe('precipitationChance', current)}</p>
+                          <p className="numerical">{WeatherDescriptions.formatRawValue('precipitationChance', current)}</p>
+                        </div>
                         <div className="later-value">
-                          <p>{dramatic}%</p>
+                          <div className="weather-value">
+                            <p className="description">{WeatherDescriptions.describe('precipitationChance', dramatic)}</p>
+                            <p className="numerical">{WeatherDescriptions.formatRawValue('precipitationChance', dramatic)}</p>
+                          </div>
                           <span className="hour-note">in {hourOffset}h</span>
                         </div>
                       </>
@@ -143,21 +158,28 @@ export default function Home() {
               
               {/* Total Precipitation Card */}
               <div className="weather-box weather-box-rain">
-                <div className="weather-box-header">
-                  <Ruler size={32} weight="fill" className="weather-box-icon" />
+                <div className="weather-box-icon-layer">
+                  <Ruler size={30} weight="fill" className="weather-box-icon" />
                 </div>
                 <div className="weather-box-content">
                   {(() => {
                     const current = weatherData.current.precipitation;
-                    const { value: dramatic, hourOffset } = OpenMeteoApi.findMostDramaticChange(
+                    const { value: dramatic, description: dramaticDesc, hourOffset } = OpenMeteoApi.findMostDramaticChange(
                       current,
-                      weatherData.hourly.precipitation
+                      weatherData.hourly.precipitation,
+                      'precipitation'
                     );
                     return (
                       <>
-                        <p>{current}"</p>
+                        <div className="weather-value">
+                          <p className="description">{WeatherDescriptions.describe('precipitation', current)}</p>
+                          <p className="numerical">{WeatherDescriptions.formatRawValue('precipitation', current)}</p>
+                        </div>
                         <div className="later-value">
-                          <p>{dramatic}"</p>
+                          <div className="weather-value">
+                            <p className="description">{WeatherDescriptions.describe('precipitation', dramatic)}</p>
+                            <p className="numerical">{WeatherDescriptions.formatRawValue('precipitation', dramatic)}</p>
+                          </div>
                           <span className="hour-note">in {hourOffset}h</span>
                         </div>
                       </>
@@ -168,21 +190,28 @@ export default function Home() {
               
               {/* Cloud Cover Card */}
               <div className="weather-box weather-box-cloud">
-                <div className="weather-box-header">
-                  <CloudSun size={32} weight="fill" className="weather-box-icon" />
+                <div className="weather-box-icon-layer">
+                  <CloudSun size={30} weight="fill" className="weather-box-icon" />
                 </div>
                 <div className="weather-box-content">
                   {(() => {
                     const current = weatherData.current.cloud_cover;
-                    const { value: dramatic, hourOffset } = OpenMeteoApi.findMostDramaticChange(
+                    const { value: dramatic, description: dramaticDesc, hourOffset } = OpenMeteoApi.findMostDramaticChange(
                       current,
-                      weatherData.hourly.cloud_cover
+                      weatherData.hourly.cloud_cover,
+                      'cloudCover'
                     );
                     return (
                       <>
-                        <p>{current}%</p>
+                        <div className="weather-value">
+                          <p className="description">{WeatherDescriptions.describe('cloudCover', current)}</p>
+                          <p className="numerical">{WeatherDescriptions.formatRawValue('cloudCover', current)}</p>
+                        </div>
                         <div className="later-value">
-                          <p>{dramatic}%</p>
+                          <div className="weather-value">
+                            <p className="description">{WeatherDescriptions.describe('cloudCover', dramatic)}</p>
+                            <p className="numerical">{WeatherDescriptions.formatRawValue('cloudCover', dramatic)}</p>
+                          </div>
                           <span className="hour-note">in {hourOffset}h</span>
                         </div>
                       </>
@@ -193,21 +222,28 @@ export default function Home() {
               
               {/* Wind Speed Card */}
               <div className="weather-box weather-box-wind">
-                <div className="weather-box-header">
-                  <Wind size={32} weight="fill" className="weather-box-icon"/>
+                <div className="weather-box-icon-layer">
+                  <Wind size={30} weight="fill" className="weather-box-icon" />
                 </div>
                 <div className="weather-box-content">
                   {(() => {
                     const current = weatherData.current.wind_speed_10m;
-                    const { value: dramatic, hourOffset } = OpenMeteoApi.findMostDramaticChange(
+                    const { value: dramatic, description: dramaticDesc, hourOffset } = OpenMeteoApi.findMostDramaticChange(
                       current,
-                      weatherData.hourly.wind_speed_10m
+                      weatherData.hourly.wind_speed_10m,
+                      'windSpeed'
                     );
                     return (
                       <>
-                        <p>{current} mph</p>
+                        <div className="weather-value">
+                          <p className="description">{WeatherDescriptions.describe('windSpeed', current)}</p>
+                          <p className="numerical">{WeatherDescriptions.formatRawValue('windSpeed', current)}</p>
+                        </div>
                         <div className="later-value">
-                          <p>{dramatic} mph</p>
+                          <div className="weather-value">
+                            <p className="description">{WeatherDescriptions.describe('windSpeed', dramatic)}</p>
+                            <p className="numerical">{WeatherDescriptions.formatRawValue('windSpeed', dramatic)}</p>
+                          </div>
                           <span className="hour-note">in {hourOffset}h</span>
                         </div>
                       </>

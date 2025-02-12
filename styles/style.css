@@ -57,45 +57,68 @@ body {
 /* Weather box style */
 .weather-box {
   background-color: #3a2a27;
-  /* border-radius: 10px; */
   padding: 5px;
   text-align: center;
   display: flex;
-  align-items: center;
+  position: relative;
   flex: 1;
+  overflow: hidden;
 }
 
-.weather-box-header {
-  padding: 5px;
-  width: 42px; /* Fixed width for icon container */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.weather-box-icon-layer {
+  position: absolute;
+  left: 10px;
+  top: 22px;
+  transform: translateY(-50%);
+  opacity: 0.4;  /* Slightly more visible */
+  z-index: 1;
 }
 
 .weather-box-content {
   display: flex;
-  justify-content: space-around;
-  padding: 10px;
+  justify-content: space-between;
+  padding: 8px;
   flex: 1;
-  align-items: flex-start;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  z-index: 2;
 }
 
-.weather-box p {
-  font-size: 0.85em;
+.weather-value {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;  /* Center content vertically */
+  gap: 2px;
+  width: 50%;
+  position: relative;
+  z-index: 2;
+  min-height: 100%;  /* Take full height of container */
+}
+
+.weather-value .description {
+  font-size: 0.65em;
   color: #200c00;
   background-color: #fdeade;
   filter: drop-shadow(0 0 5px #eecebb);
   padding: 3px;
   border-radius: 2px;
-  min-width: fit-content;
+  width: 100%;
   margin: 0;
   height: fit-content;
 }
 
+.weather-value .numerical {
+  font-size: 0.5em;
+  color: #fdeade;
+  margin: 0;
+  height: fit-content;
+  text-shadow: 0 0 3px #eecebb;
+}
+
 .weather-box-icon {
   color: #fdeade;
-  margin-bottom: 5px;
   filter: drop-shadow(0 0 5px #eecebb);
 }
 
@@ -115,7 +138,7 @@ body {
   background-position: center;
   filter: contrast(0.3) brightness(0.55);
   /* filter: blur(2px); */
-  z-index: 0;
+  z-index: 0;  /* Below everything */
 }
 
 .weather-box-cloud::before {
@@ -138,11 +161,17 @@ body {
   background-image: url('../images/temp-cottage.jpg');
 }
 
-/* Ensure content stays above the background image */
-.weather-box-header,
-.weather-box-content {
-  position: relative;
-  z-index: 1;
+.weather-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: cover;
+  background-position: center;
+  filter: contrast(0.3) brightness(0.55);
+  z-index: 0;  /* Below everything */
 }
 
 /* Suggestions container */
@@ -202,7 +231,6 @@ body {
   color: #fdeade;
   font-size: 0.7em;
   text-shadow: 0 0 5px #eecebb;
-  margin-left: 52px; /* Account for icon width + padding */
 }
 
 .weather-grid-header > div {
@@ -213,9 +241,29 @@ body {
 .later-value {
   display: flex;
   flex-direction: column;
+  justify-content: center;  /* Center content vertically */
   align-items: center;
   gap: 4px;
-  min-width: fit-content;
+  width: 50%;
+  height: fit-content;
+  min-height: 100%;  /* Take full height of container */
+}
+
+.later-value .weather-value {
+  width: 100%;
+  margin: 0;
+  padding-bottom: 16px;  /* Make space for the hour note */
+}
+
+.weather-value .description {
+  font-size: 0.65em;
+  color: #200c00;
+  background-color: #fdeade;
+  filter: drop-shadow(0 0 5px #eecebb);
+  padding: 3px;
+  border-radius: 2px;
+  width: 100%;
+  margin: 0;
   height: fit-content;
 }
 
@@ -223,5 +271,7 @@ body {
   font-size: 0.65em;
   color: #fdeade;
   opacity: 0.8;
+  position: absolute;
+  bottom: 0;
 }
   
