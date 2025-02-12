@@ -116,4 +116,29 @@ export class OpenMeteoApi {
       hour12: true
     });
   }
+
+  /**
+   * Find the most dramatic change in a weather metric over the next 12 hours
+   */
+  static findMostDramaticChange(
+    currentValue: number,
+    hourlyValues: number[],
+    firstNHours: number = 12
+  ): { value: number; hourOffset: number } {
+    const relevantValues = hourlyValues.slice(0, firstNHours);
+    let maxDelta = 0;
+    let mostDramaticValue = currentValue;
+    let hourOffset = 0;
+    
+    relevantValues.forEach((value, index) => {
+      const delta = Math.abs(value - currentValue);
+      if (delta > maxDelta) {
+        maxDelta = delta;
+        mostDramaticValue = value;
+        hourOffset = index + 1;
+      }
+    });
+    
+    return { value: mostDramaticValue, hourOffset };
+  }
 } 

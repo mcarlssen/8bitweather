@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { useState } from 'react';
 import LocationInput from '../components/LocationInput';
-import { GlobeHemisphereWest } from 'phosphor-react';
+import { GlobeHemisphereWest, Thermometer, Wind, CloudSun, Ruler, Percent } from 'phosphor-react';
 import { OpenMeteoApi } from '../services/openMeteoApi';
 
 export default function Home() {
@@ -86,31 +86,135 @@ export default function Home() {
         )}
         {weatherData && (
           <>
-            <div id="weather-display">
-              <h2>Current Conditions</h2>
-              <div className="current-conditions">
-                <p>Temperature: {weatherData.current.temperature_2m}°F</p>
-                <p>Wind Speed: {weatherData.current.wind_speed_10m} mph</p>
-                <p>Cloud Cover: {weatherData.current.cloud_cover}%</p>
-                <p>Precipitation: {weatherData.current.precipitation}" </p>
-                <p>As of: {OpenMeteoApi.formatTime(weatherData.current.time)}</p>
-              </div>
+            <div className="weather-grid-header">
+              <div>Now</div>
+              <div>Later</div>
             </div>
-
             <div id="weather-grid">
-              {/* Show next 4 hours of forecast */}
-              {weatherData.hourly.time.slice(0, 4).map((time, index) => (
-                <div key={time} className="weather-box">
-                  <h4>{OpenMeteoApi.formatTime(time)}</h4>
-                  <div className="weather-box-content">
-                    <p>{weatherData.hourly.temperature_2m[index]}°F</p>
-                    <p>{weatherData.hourly.precipitation_probability[index]}% chance of rain</p>
-                    <p>{weatherData.hourly.precipitation[index]}" precipitation</p>
-                    <p>{weatherData.hourly.cloud_cover[index]}% clouds</p>
-                    <p>{weatherData.hourly.wind_speed_10m[index]} mph wind</p>
-                  </div>
+              {/* Temperature Card */}
+              <div className="weather-box weather-box-temp">
+                <div className="weather-box-header">
+                  <Thermometer size={32} weight="fill" className="weather-box-icon" />
                 </div>
-              ))}
+                <div className="weather-box-content">
+                  {(() => {
+                    const current = weatherData.current.temperature_2m;
+                    const { value: dramatic, hourOffset } = OpenMeteoApi.findMostDramaticChange(
+                      current,
+                      weatherData.hourly.temperature_2m
+                    );
+                    return (
+                      <>
+                        <p>{current}°F</p>
+                        <div className="later-value">
+                          <p>{dramatic}°F</p>
+                          <span className="hour-note">in {hourOffset}h</span>
+                        </div>
+                      </>
+                    );
+                  })()}
+                </div>
+              </div>
+              
+              {/* Precipitation Chance Card */}
+              <div className="weather-box weather-box-precip">
+                <div className="weather-box-header">
+                  <Percent size={32} weight="fill" className="weather-box-icon" />
+                </div>
+                <div className="weather-box-content">
+                  {(() => {
+                    const current = weatherData.current.precipitation_probability;
+                    const { value: dramatic, hourOffset } = OpenMeteoApi.findMostDramaticChange(
+                      current,
+                      weatherData.hourly.precipitation_probability
+                    );
+                    return (
+                      <>
+                        <p>{current}%</p>
+                        <div className="later-value">
+                          <p>{dramatic}%</p>
+                          <span className="hour-note">in {hourOffset}h</span>
+                        </div>
+                      </>
+                    );
+                  })()}
+                </div>
+              </div>
+              
+              {/* Total Precipitation Card */}
+              <div className="weather-box weather-box-rain">
+                <div className="weather-box-header">
+                  <Ruler size={32} weight="fill" className="weather-box-icon" />
+                </div>
+                <div className="weather-box-content">
+                  {(() => {
+                    const current = weatherData.current.precipitation;
+                    const { value: dramatic, hourOffset } = OpenMeteoApi.findMostDramaticChange(
+                      current,
+                      weatherData.hourly.precipitation
+                    );
+                    return (
+                      <>
+                        <p>{current}"</p>
+                        <div className="later-value">
+                          <p>{dramatic}"</p>
+                          <span className="hour-note">in {hourOffset}h</span>
+                        </div>
+                      </>
+                    );
+                  })()}
+                </div>
+              </div>
+              
+              {/* Cloud Cover Card */}
+              <div className="weather-box weather-box-cloud">
+                <div className="weather-box-header">
+                  <CloudSun size={32} weight="fill" className="weather-box-icon" />
+                </div>
+                <div className="weather-box-content">
+                  {(() => {
+                    const current = weatherData.current.cloud_cover;
+                    const { value: dramatic, hourOffset } = OpenMeteoApi.findMostDramaticChange(
+                      current,
+                      weatherData.hourly.cloud_cover
+                    );
+                    return (
+                      <>
+                        <p>{current}%</p>
+                        <div className="later-value">
+                          <p>{dramatic}%</p>
+                          <span className="hour-note">in {hourOffset}h</span>
+                        </div>
+                      </>
+                    );
+                  })()}
+                </div>
+              </div>
+              
+              {/* Wind Speed Card */}
+              <div className="weather-box weather-box-wind">
+                <div className="weather-box-header">
+                  <Wind size={32} weight="fill" className="weather-box-icon"/>
+                </div>
+                <div className="weather-box-content">
+                  {(() => {
+                    const current = weatherData.current.wind_speed_10m;
+                    const { value: dramatic, hourOffset } = OpenMeteoApi.findMostDramaticChange(
+                      current,
+                      weatherData.hourly.wind_speed_10m
+                    );
+                    return (
+                      <>
+                        <p>{current} mph</p>
+                        <div className="later-value">
+                          <p>{dramatic} mph</p>
+                          <span className="hour-note">in {hourOffset}h</span>
+                        </div>
+                      </>
+                    );
+                  })()}
+                </div>
+              </div>
             </div>
           </>
         )}
