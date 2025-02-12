@@ -5,6 +5,7 @@ import { GlobeHemisphereWest, Thermometer, Wind, CloudSun, Ruler, Percent } from
 import { OpenMeteoApi } from '../services/openMeteoApi';
 import { WeatherData } from '../services/openMeteoApi';
 import { WeatherDescriptions } from '../services/weatherDescriptions';
+import { Analytics } from "@vercel/analytics/react"
 
 interface Suggestion {
   name: string;
@@ -72,6 +73,7 @@ export default function Home() {
           href="https://unpkg.com/phosphor-icons@1.4.1/src/css/phosphor.css"
         />
       </Head>
+      <Analytics />
       <div id="app">
         <div id="header">
           <div className="header-title">
