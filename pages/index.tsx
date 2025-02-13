@@ -2,7 +2,6 @@ import Head from 'next/head';
 import { useState } from 'react';
 import LocationInput from '../components/LocationInput';
 import HourlyGraph from '../components/HourlyGraph';
-import { GlobeHemisphereWest } from 'phosphor-react';
 import { OpenMeteoApi } from '../services/openMeteoApi';
 import { WeatherData } from '../services/openMeteoApi';
 import { WeatherDescriptions } from '../services/weatherDescriptions';
@@ -117,7 +116,7 @@ export default function Home() {
                 <div className="weather-box-inner">
                   <div className="weather-box-front">
                     <div className="weather-box-icon-layer">
-                      <img src="https://unpkg.com/pixelarticons@1.8.1/svg/ac.svg" className="weather-box-icon"/>
+                      <img src="https://unpkg.com/pixelarticons@1.8.1/svg/ac.svg" className="weather-box-icon" alt="temperature"/>
                     </div>
                     <div className="weather-box-content">
                       {(() => {
@@ -166,7 +165,7 @@ export default function Home() {
                 <div className="weather-box-inner">
                   <div className="weather-box-front">
                     <div className="weather-box-icon-layer">
-                      <img src="https://unpkg.com/pixelarticons@1.8.1/svg/percent.svg" className="weather-box-icon"/>
+                      <img src="https://unpkg.com/pixelarticons@1.8.1/svg/percent.svg" className="weather-box-icon" alt="precipitation chance"/>
                     </div>
                     <div className="weather-box-content">
                       {(() => {
@@ -215,7 +214,7 @@ export default function Home() {
                 <div className="weather-box-inner">
                   <div className="weather-box-front">
                     <div className="weather-box-icon-layer">
-                      <img src="https://unpkg.com/pixelarticons@1.8.1/svg/drop-half.svg" className="weather-box-icon"/>
+                      <img src="https://unpkg.com/pixelarticons@1.8.1/svg/drop-half.svg" className="weather-box-icon" alt="precipitation"/>
                     </div>
                     <div className="weather-box-content">
                       {(() => {
@@ -264,7 +263,7 @@ export default function Home() {
                 <div className="weather-box-inner">
                   <div className="weather-box-front">
                     <div className="weather-box-icon-layer">
-                      <img src="https://unpkg.com/pixelarticons@1.8.1/svg/cloud-sun.svg" className="weather-box-icon"/>
+                      <img src="https://unpkg.com/pixelarticons@1.8.1/svg/cloud-sun.svg" className="weather-box-icon" alt="cloud cover"/>
                     </div>
                     <div className="weather-box-content">
                       {(() => {
@@ -313,7 +312,7 @@ export default function Home() {
                 <div className="weather-box-inner">
                   <div className="weather-box-front">
                     <div className="weather-box-icon-layer">
-                      <img src="https://unpkg.com/pixelarticons@1.8.1/svg/wind.svg" className="weather-box-icon"/>
+                      <img src="https://unpkg.com/pixelarticons@1.8.1/svg/wind.svg" className="weather-box-icon" alt="wind speed"/>
                     </div>
                     <div className="weather-box-content">
                       {(() => {
@@ -368,7 +367,7 @@ export default function Home() {
             }}
             title="Copy API URL"
           >
-            <img src="https://unpkg.com/pixelarticons@1.8.1/svg/sync.svg" className="debug-icon"/>
+            <img src="https://unpkg.com/pixelarticons@1.8.1/svg/sync.svg" className="debug-icon" alt="copy API URL"/>
           </div>
           <div
             className="debug-api-button"
@@ -380,7 +379,7 @@ export default function Home() {
             }}
             title="Refresh Weather Data"
           >
-            <img src="https://unpkg.com/pixelarticons@1.8.1/svg/loader.svg" className="debug-icon"/>
+            <img src="https://unpkg.com/pixelarticons@1.8.1/svg/loader.svg" className="debug-icon" alt="refresh weather"/>
           </div>
         </div>
       )}
