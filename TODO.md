@@ -1,1 +1,6 @@
 - enable location detection
+- tap on a card to flip it, and display the 12 hour forecast
+- an hour selector to limit how far the forecast goes
+- add a 'howto' page before a location is set
+- make the app auto-scale on mobile, fixed on desktop
+- add more graphics

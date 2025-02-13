@@ -52,14 +52,14 @@ export class WeatherDescriptions {
     },
     cloudCover: {
       unit: '%',
-      defaultDescription: 'partly cloudy',
+      defaultDescription: 'bleh',
       ranges: [
-        { min: 0, max: 10, descriptions: ['Clear skies, sunny!', 'Sunny, clear skies!'] },
+        { min: 0, max: 10, descriptions: ['Very sunny!', 'You\'ll need sunglasses!'] },
         { min: 10, max: 30, descriptions: ['A few clouds, still sunny!', 'Mostly sunny, few clouds!'] },
         { min: 30, max: 50, descriptions: ['Partly cloudy, nice day!', 'Partly cloudy, nice day!'] },
         { min: 50, max: 70, descriptions: ['Mostly cloudy, less sun!', 'Mostly cloudy, less sun!'] },
-        { min: 70, max: 90, descriptions: ['Cloudy, no sun!', 'Cloudy, no sun!'] },
-        { min: 90, max: 100, descriptions: ['Overcast, gray sky!', 'Overcast, gray sky!'] }
+        { min: 70, max: 90, descriptions: ['Cloudy, no sun!', 'Just a peek of sun'] },
+        { min: 90, max: 100, descriptions: ['Overcast, gray sky!', 'A real London Souper', 'Completely cloudy'] }
       ]
     }
   };
@@ -72,7 +72,7 @@ export class WeatherDescriptions {
     if (!descriptor) return `${value}`;
 
     // Find all matching ranges
-    const matchingRanges = descriptor.ranges.filter(r => value >= r.min && value < r.max);
+    const matchingRanges = descriptor.ranges.filter(r => value >= r.min && value <= r.max);
     
     if (matchingRanges.length === 0) return descriptor.defaultDescription;
     

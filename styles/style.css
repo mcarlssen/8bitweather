@@ -45,6 +45,15 @@ body {
   margin: 0;
 }
 
+.header-globe {
+  width: 32px;
+  height: 32px;
+  background-image: url('../images/globe.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 /* Bento Grid for the 4 weather boxes (2x2) */
 #weather-grid {
   display: flex;
@@ -58,12 +67,55 @@ body {
 .weather-box {
   background-color: #3a2a27;
   outline: 1px solid #978480;
-  padding: 5px;
+  padding: 0;
   text-align: center;
   display: flex;
   position: relative;
   flex: 1;
   overflow: hidden;
+  perspective: 1000px; /* Required for 3D effect */
+  cursor: pointer;
+}
+
+.weather-box-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.weather-box.flipped .weather-box-inner {
+  transform: rotateY(180deg);
+}
+
+.weather-box-front, .weather-box-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.weather-box-back {
+  transform: rotateY(180deg);
+  background-color: #3a2a27;
+  transition: background-color 0.3s;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 3;
+}
+
+.weather-box.flipped .weather-box-back {
+  animation: flashBackground 0.6s;
+}
+
+@keyframes flashBackground {
+  0% { background-color: #3a2a27; }
+  50% { background-color: #4d3935; }
+  100% { background-color: #3a2a27; }
 }
 
 .weather-box-icon-layer {
@@ -141,14 +193,9 @@ body {
 }
 
 .weather-box-icon {
-  width: 24px;
-  height: 24px;
-}
-
-/* Style for Phosphor icons */
-svg.weather-box-icon {
-  color: #fdeade;
-  filter: drop-shadow(0 0 5px #eecebb);
+  width: 32px;
+  height: 32px;
+  padding-top: 5px;
 }
 
 /* Style for pixelarticon SVGs */
@@ -280,6 +327,59 @@ img.weather-box-icon {
   width: 20px;
   height: 20px;
   filter: saturate(319%) hue-rotate(316deg) brightness(103%) contrast(101%) drop-shadow(0 0 5px #eecebb);
+}
+
+.hourly-times {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.5em;
+  color: #fdeade;
+  padding: 15px 5px;
+  gap: 5px;
+  width:95%;
+  margin: 0 auto;
+}
+
+.hourly-graph {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+  padding: 15px 5px;
+  width:95%;
+  margin: 0 auto;
+}
+
+.baseline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background-color: #fdeade44;
+}
+
+.hourly-bar-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 50%;
+  justify-content: center;
+  position: relative;
+}
+
+.hourly-value {
+  font-size: 0.35em;
+  color: #fdeade;
+  text-align: center;
+  padding: 2px 0;
+  margin-bottom: 15px;
+}
+
+.hourly-bar {
+  transition: height 0.3s;
+  min-height: 1px;
 }
 
   
